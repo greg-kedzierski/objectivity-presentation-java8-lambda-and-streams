@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Java8 - Lambdas & Streams</title>
+
+		<meta name="description" content="Short introduction to Lambda and Streams in Java8">
+		<meta name="author" content="gkedzierski@objectivity.co.uk">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+		<style>
+			h1, h2 { color: #BF3D3D !important;
+				/*white-space: nowrap !important;*/ }
+			h3 {
+				line-height: 1.5em  !important;
+			}
+			h1 div, h2 div {
+				font-size: 50% !important;
+				color: #383d3d;
+				display: block;
+			}
+
+			b, .h {
+				color: #aa3333  !important;
+				font-weight: bold !important;
+			}
+
+			.mt {
+				margin-top: 1em  !important;
+			}
+
+			.foot {
+				font-size: 50%  !important;
+				white-space: nowrap !important;
+			}
+
+			li {
+				margin-top: 20px  !important;
+			}
+
+			li div {
+				padding-left: 50px  !important;
+			}
+
+			.bigger {
+				font-size: 200%  !important;
+			}
+
+			p {
+				line-height: 1.5em  !important;
+			}
+			.smaller {
+				font-size: 75% !important;
+			}
+
+
+
+		</style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+
+				<section>
+					<h1>Lambdas & Streams<div>in Java8<br />~ quick introduction ~</div></h1>
+				</section>
+
+				<section>
+					<h2>Presentation agenda</h2>
+					<p>...is very simple</p>
+					<ul class="fragment">
+						<li>First, I will talk a little bit about anonymous methods aka<br /><b>Lambda Expressions</b>,</li>
+						<li>Then, I will introduce second big thing in Java8, which is<br /><b>Stream API</b></li>
+					</ul>
+				</section>
+
+				<section>
+					<p>What does these topics have in common?</p>
+					<h2 class="fragment mt">Functional programming background</h2>
+					<ul class="mt fragment">
+						<li><b>Lambda</b><div>Treat methods as first-class citizens</div></li>
+						<li><b>Stream API</b><div>Declarative programming</div></li>
+					</ul>
+				</section>
+
+				<section>
+					<p>so... are we going to talk about <b>Functional Programming Paradigm</b>?</p>
+					<div class="fragment">
+						<p class="mt bigger"><b>Nope!</b></p>
+						<p class="mt">Just <b>lambda</b> and <b>streams</b>,<br />
+							... <b>FP</b> is to big topic for this presentation<br />
+							... and <b>Java8</b> still isn't a functional language<br />
+							... but more on that later.</p>
+					</div>
+				</section>
+
+				<section>
+					<p>interlude (I)</p>
+					<h2 class="mt">Verbs vs Nouns</h2>
+					<p class="fragment mt">Imagin a world of inhabited by <b>Verbs</b> and <b>Nouns</b></p>
+					<p class="fragment mt">... but only <b>Nouns</b> can <b>move freely</b></p>
+					<div class="fragment mt">
+						<p><b>Verbs</b> can move only when they are <b>escorted by Nouns</b></p>
+						<p>(or when they disguise themselves as nouns)</p>
+					</div>
+				</section>
+
+				<section>
+					<p>interlude (I) - cont’d</p>
+					<h2 class="mt">Verbs vs Nouns</h2>
+					<p class="mt">In such a world only <b>Nouns</b> are <b>first-class citizens</b></p>
+					<p class="fragment"><b>Verbs</b> live just to serve their masters</p>
+					<p class="fragment mt">This is <b>pre Java8</b> world</p>
+					<p class="fragment mt">Did this changed in <b>Java 8</b>?</p>
+				</section>
+
+				<section>
+					<p>interlude (I) - cont’d</p>
+					<h2 class="mt">Verbs vs Nouns</h2>
+					<p class="mt">Nice (but a little bit outdated by Java8) "article" (short story?)<br />about Nouns and Verbs in the Java Kingdom</p>
+					<p class="mt"><a href="http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html">"Execution in the Kingdom of Nouns"<br />http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html</a></p>
+				</section>
+
+				<section>
+					<h2>Lambda... here we go!</h2>
+				</section>
+
+				<section>
+					<p>Let's start with an <b>example</b></p>
+					<p>...of <b>non-lambda</b> style of programming</p>
+					<div class="fragment mt"><pre><code data-trim>
+button.addActionListener(new ActionListener() {
+  public void actionPerformed(ActionEvent e) {
+    System.out.println(e);
+  }
+});
+					</code></pre></div>
+					<p class="fragment">...what a <b>waste of space</b> (and time!)</p>
+					<p class="fragment">and this has even a  name - <b>Boilerplate code!</b></p>
+				</section>
+
+				<section>
+					<p>Let's rewrite it with <b>lambda</b> on board!</p>
+					<div class="fragment">
+					<pre><code data-trim>
+button.addActionListener((ActionEvent e) -> {
+  System.out.println(e);
+});
+					</code></pre></div>
+					<p class="fragment">... simpler, but we can do even better, let <b>remove parameter type</b>!</p>
+					<div class="fragment">
+					<pre><code data-trim>
+button.addActionListener(e -> {
+  System.out.println(e);
+});
+					</code></pre></div>
+					<p class="fragment">...<b>replace block</b> with <b>single statement</b>!</p>
+					<div class="fragment">
+					<pre><code data-trim>
+button.addActionListener(e -> System.out.println(e));
+					</code></pre></div>
+					<p class="fragment">...add <b>method reference.</b></p>
+					<div class="fragment">
+					<pre><code data-trim>
+button.addActionListener(System.out::println);
+					</code></pre></div>
+				</section>
+
+				<section>
+					<p>Some examples (from spec) of <b>Lambda expressions</b></p>
+					<pre><code data-trim>
+() -> {}                     // No parameters; result is void
+
+() -> 42                     // No parameters, expression body
+
+() -> { return 42; }         // No parameters, block body with return
+
+() -> {                      // Complex block body with returns
+  int result = 15;
+  for (int i = 1; i < 10; i++) {
+    result *= i;
+  }
+  return result;
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<p>Some examples (from spec) of <b>Lambda expressions</b></p>
+					<pre><code data-trim>
+(int x) -> x+1             		// Single declared-type parameter
+
+(x) -> x+1                 		// Single inferred-type parameter
+
+x -> x+1                   		// Parens optional for single inferred-type case
+
+(Thread t) -> { t.start(); } 	// Single declared-type parameter
+
+(int x, int y) -> x+y      		// Multiple declared-type parameters
+
+(x,y) -> x+y               		// Multiple inferred-type parameters
+
+(final int x) -> x+1       		// Modified declared-type parameter
+
+(x, final y) -> x+y        		// Illegal: can't modify inferred-type parameters
+
+(x, int y) -> x+y          		// Illegal: can't mix inferred and declared types
+					</code></pre>
+				</section>
+
+				<section>
+<p><b>Lambda</b> syntax description</p>
+					<pre><code data-trim>
+LambdaExpression: LambdaParameters '->' LambdaBody
+
+LambdaParameters: Identifier | '(' FormalParameterListopt ')' | '(' InferredFormalParameterList ')'
+
+LambdaBody: Expression | Block
+
+ParameterList: FullParameter {, FullParameter}
+
+FullParameter: {Annotation} [final] Type Identifier
+
+InferredFormalParameterList: Identifier {, Identifier}
+						</code></pre>
+				</section>
+
+				<section>
+					<h3><b>Lambda</b> can be only defined in two contexts</h3>
+					<ul class="fragment">
+						<li>as an <b>argument</b> to some method</li>
+						<li>as a (right side) part of an <b>assignment expression</b></li>
+					</ul>
+					<div class="fragment">
+						<p class="mt">In other words, <b>lambda</b> needs to know the <b>context</b> - or <b>result type</b> - to which it is assigned.<p>
+						<p class="mt smaller">Little JVM digression - same <b>lambda</b> can be apply to different types, underneath it's using Java8's new ability called <b>poly expression</b>, which deduced type by looking at the target type.</p>
+					</div>
+				</section>
+
+				<section>
+					<h3>But if <b>lambda</b> needs to have a <b>result type</b>, what can it be?</h3>
+					<div class="mt fragment">
+						<p>The answer is:</p>
+						<h2>Functional Interface</h2>
+					</div>
+				</section>
+
+				<section>
+					<p class="mt"><b>Functional Interface</b> is a funny buzzword for naming <b>interfaces</b> with only <b>one "abstract" method.</b><br />
+					<span class="smaller">(abstract, because nowadays  interfaces can have non-abstract default methods...)</span></p>
+
+					<p class="mt">In other words, <b>all existing interfaces</b> that have only <b>one abstract methods</b> can be now called <b>functional interface</b>,
+					and we can used them as a <b>result type</b> for <b>lambda expressions</b>.</p>
+				</section>
+
+				<section>
+					<b>Functional methods</b>, should have <b>same parameters</b> and <b>(optional!) result type</b> as <b>lambda</b>, which we want to assigned to it, eg:
+					<pre><code data-trim>
+Fun fun = (int x, int y) -> x+y
+
+interface Fun {
+  int sum(int a, int b)
+}
+// But we can also ignore the result
+interface Fun {
+  void sum(int a, int b)
+}
+					</code></pre>
+					<div class="fragment">
+					<p class="mt">Because <b>Java8</b> have <b>type inference</b> ability, we can also write</p>
+					<pre><code data-trim>
+				Fun fun = (x,y) -> x + y
+						</code></pre>
+					<p>And java will inference actual <b>argument type</b>, by looking at a <b>result type</b>.</p>
+					</div>
+				</section>
+
+				<section>
+					<p>In package <b>java.util.function</b> are definitions of some<br /><b>generic functional interfaces</b>, like</p>
+					<pre><code data-trim class="java">
+Function: T -> R;
+Consumer: T -> void;
+Supplier: () -> T
+Predicate: T -> boolean
+
+BiFunction: T, U -> R
+BinaryOperator: T, T -> T
+						</code></pre>
+					<div class="fragment">
+					<p>We can rewrite our previous example now using generic FI:</p>
+					<pre><code data-trim>
+BinaryOperator&lt;Integer&gt; fun = (x,y) -> x + y;
+							</code></pre>
+					</div>
+				</section>
+
+				<section>
+					<p><b>Java8</b> provides annotation <b>@FunctionalInterface</b> which we can use to
+						<b>mark interface</b> as <b>functional interface</b>, but this isn't necessary.
+						We can use <b>all interfaces</b>, even those <b>without</b> this annotation.</p>
+					<p class="mt">When using this <b>annotation</b>, java <b>compiler</b> ensures that <b>marked interface</b> have only <b>one abstract method</b>.</p>
+				</section>
+
+				<section>
+					<h1>Demo time...</h1>
+				</section>
+
+				<section>
+					<h2>Method reference</h2>
+					<p class="mt"><b>Method reference</b> is the ability to <b>assign</b> to <b>functional interface</b> a...<br/><b>method handler</b>.</p>
+					<div class="fragment mt">
+					<p>It looks like this:</p>
+					<pre><code data-trim class="java">
+System::getProperty  // static method handler
+
+"abc"::length        // instance method on instance handler
+
+System.out::println  // instance method on instance handler
+
+String::length       // instance method on class handler
+
+ArrayList::new       // constructor handler handler
+						</code></pre>
+					</div>
+				</section>
+
+				<section>
+					<p>We need to <b>assign handlers</b> to some <b>functional interfaces</b> type, which should <b>bound</b> any necessary <b>input parameters.</b></p>
+					<p class="mt">It's more easier than it sounds...</p>
+
+					<pre><code data-trim class="java">
+// static method - parameters and returning type (optional) same as in target method
+UnaryOperator&lt;String&gt; getProperty = System::getProperty;
+
+// instance method on instance - parameters and returning type (optional) same as in target method
+Supplier&lt;Integer&gt; length = "abc"::length;
+
+// instance method on instance
+Consumer&lt;Object&gt; printer = System.out::println;
+
+//  instance method on class - first parameter is class instance, then parameters from target method
+Function&lt;String,Integer&gt; length2 = String::length;
+
+// constructor handler - parameters same as constructor, return type samme as class
+// (or any of its parents)
+Supplier&lt;List&gt; listFactory = ArrayList::new;
+						</code></pre>
+				</section>
+
+				<section>
+					<h1>Demo time...</h1>
+				</section>
+
+				<section>
+					<h3>But... comparing this to pre java8 times, is this something realy new?</h3>
+				</section>
+
+				<section>
+					<p class="mt">In <b>Java</b> we could always passed <b>code as data</b>, but this "code" needs to be wrapped <b>explicitly</b> as Java Class (eg. <b>Anonymous class</b>).</p>
+
+					<div class="fragment">
+						<p class="mt">Ability of creating <b>lambdas</b> in Java8 looks like <b>syntactic sugar</b> comparing to the the old notation.<br />
+						<b>But</b> underneath it uses <b>different JVM mechanism</b>... so no, <b>it's NOT</b> only a <b>syntactic sugar</b>.</p>
+
+						<p class="mt smaller"><b>Lambdas</b> are compiled as <b>static methods</b> inside the class in which there are defined. <b>Does this make a difference?</b>
+						Image a single class that use <b>100 lambdas</b> inside. If we would compile them as <b>nested classes</b>, then we end up with <b>101 classes</b> on classpath.
+						<b>Lambda</b> will generate only <b>one class</b>.
+						Nice.</p>
+					</div>
+				</section>
+
+				<section>
+					<p>interlude (II)</p>
+					<p class="mt">So... are <b>Verbs first-class citizens in Java8 world</b>?</p>
+					<p class="fragment"><b>Almost</b>... but still, when <b>going outside</b>, <b>Verbs</b> must <b>dress up as nouns</b><br />
+						<span class="smaller">(let's call them transgender verbs :P)</span></p>
+				</section>
+
+				<section>
+					<h2>Interesting sources:</h2>
+					<p>State of the Lambda<br />
+						<a class="smaller" href="http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-final.html">http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-final.html</a></p>
+
+					<p class="mt">
+						State of the Lambda: Libraries Edition<br />
+						<a class="smaller" href="http://cr.openjdk.java.net/~briangoetz/lambda/lambda-libraries-final.html">http://cr.openjdk.java.net/~briangoetz/lambda/lambda-libraries-final.html</a></p>
+
+					<p class="mt">
+						Translation of Lambda Expressions<br />
+						<a class="smaller" href="http://cr.openjdk.java.net/~briangoetz/lambda/lambda-translation.html">http://cr.openjdk.java.net/~briangoetz/lambda/lambda-translation.html</a></p>
+					<p class="mt">
+						JSR 335: Lambda Expressions for the JavaTM Programming Language<br />
+						<a class="smaller" href="https://jcp.org/en/jsr/detail?id=335">https://jcp.org/en/jsr/detail?id=335</a></p>
+				</section>
+
+
+				<section>
+					<h1>THE END</h1>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				width: 1200,
+
+				theme: 'serif', // available themes are in /css/theme
+				transition: 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
