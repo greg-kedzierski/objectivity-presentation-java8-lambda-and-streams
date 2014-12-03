@@ -424,6 +424,55 @@ Supplier&lt;List&gt; listFactory = ArrayList::new;
 						<a class="smaller" href="https://jcp.org/en/jsr/detail?id=335">https://jcp.org/en/jsr/detail?id=335</a></p>
 				</section>
 
+                <section>
+                    <h1>Streams</h1>
+                </section>
+
+                <section>
+                    <h2>External vs Internal iterations</h2>
+                    <div class="fragment">
+                    <p>Let's start with simple iteration using <b>for loop</b></p>
+                    <pre><code data-trim class="java">
+List&lt;String&gt; strings = ...
+for (int i = 0; i < strings.lenght(); i++) {
+  System.out.println(strings.get(0));
+}
+                    </code></pre>
+                    </div>
+                    <div class="fragment">
+                    <p>Starting from <b>Java 1.5</b> we can rewrite it using <b>for each loop</b></p>
+                    <pre><code data-trim class="java">
+for (String s: strings) {
+  System.out.println(s);
+}
+                    </code></pre>
+                    </div>
+                    <p class="fragment">
+                        This were the examples of <b>external iterations</b> - we, <b>in code</b>, decide <b>how to iterate</b> over some collection.
+                    </p>
+               </section>
+                <section>
+                    <h2>External vs Internal iterations</h2>
+                    <p>Next step - <b>internal iteration</b></p>
+                    <div class="fragment">
+                    <pre><code data-trim class="java">
+strings.forEach(System.out::println);
+                    </code></pre>
+                    </div>
+                    <div class="fragment">
+                    vs <b>external iteration</b>
+                    <pre><code data-trim class="java">
+for (String s: strings) {
+  System.out.println(s);
+}
+                    </code></pre>
+                    <p>Looks only like a small, meaningless syntactic change, but...</p>
+                    </div>
+                    <p class="fragment">We are <b>giving the control</b> of the iteration to <b>the library code</b> and it changes a lot!</p>
+
+
+                </section>
+
 
 				<section>
 					<h1>THE END</h1>
