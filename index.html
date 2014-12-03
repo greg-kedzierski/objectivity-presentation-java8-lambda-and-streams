@@ -500,6 +500,36 @@ for (String s: strings) {
 
                 <section>
                     <h2>Streams and parallelism</h2>
+                    <p class="mt">It's realy simple, just...</p>
+                    <div class="fragment">
+<pre><code data-trim class="java">
+    stream.parallel()...
+</code></pre>
+                     <p>And thats all! Now <b>all operation on stream</b> will be <b>executed in parallel</b>.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Streams and parallelism</h2>
+                    <p class="mt">But be careful!</p>
+                    <p class="mt fragment">Underneath <b>Stream</b> library is using <b>Fork/Join</b> framework for implementing parallelism.</p>
+                    <p class="mt fragment">...and it's is using a <b>common thread pool</b> from <b>Fork/Join</b>.</p>
+                    <p class="mt fragment"><b>Having a long-running operation on Stream can block all threads in the pool!!!</b></p>
+                </section>
+
+                <section>
+                    <h2>Streams and parallelism</h2>
+                    <p>To solve this problem we can either <b>create a new pool</b> and run stream operation in it</p>
+<pre><code data-trim class="java">
+ForkJoinPool forkJoinPool = new ForkJoinPool(20);
+forkJoinPool.submit(() ->
+  stream.parallel()...
+).get();
+</code></pre>
+                    <p>or use a <b>property</b> to increase <b>common thread pool</b> size</p>
+<pre><code data-trim class="java">
+java.util.concurrent.ForkJoinPool.common.parallelism
+</code></pre>
 
                 </section>
 
