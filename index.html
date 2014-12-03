@@ -356,8 +356,8 @@ ArrayList::new       // constructor handler handler
 
 				<section>
 					<p>We need to <b>assign handlers</b> to some <b>functional interfaces</b> type, which should <b>bound</b> any necessary <b>input parameters.</b></p>
+                    <div class="fragment">
 					<p class="mt">It's more easier than it sounds...</p>
-
 					<pre><code data-trim class="java">
 // static method - parameters and returning type (optional) same as in target method
 UnaryOperator&lt;String&gt; getProperty = System::getProperty;
@@ -375,6 +375,7 @@ Function&lt;String,Integer&gt; length2 = String::length;
 // (or any of its parents)
 Supplier&lt;List&gt; listFactory = ArrayList::new;
 						</code></pre>
+                    </div>
 				</section>
 
 				<section>
