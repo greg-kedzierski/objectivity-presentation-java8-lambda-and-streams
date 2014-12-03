@@ -469,10 +469,39 @@ for (String s: strings) {
                     <p>Looks only like a small, meaningless syntactic change, but...</p>
                     </div>
                     <p class="fragment">We are <b>giving the control</b> of the iteration to <b>the library code</b> and it changes a lot!</p>
-
-
                 </section>
 
+                <section>
+                    <h2>Internal iterations</h2>
+                    <p>Our code moves from <b>imperative</b> style to more <b>declarative</b> one, so...</p>
+                    <p class="fragment mt">We are not telling how to iterate - library code decides how to do the iteration.</p>
+                    <p class="fragment mt">Library can support out of the box laziness, <b>parallelism</b>, out-of-order execution etc.</p>
+                    <p class="fragment mt">Client code is much <b>cleaner</b>, programmer needs to focus only on the <b>business problem</b>, not on the <b>technical details of implementation</b>.</p>
+                </section>
+
+                <section>
+                    <h2>... let's get back to Streams.</h2>
+                </section>
+
+                <section>
+                    <h2>Stream...</h2>
+
+                    <p class="mt">is just a <b>sequence</b> of values on with we can manipulate and do common things, like <b>filtering</b>, <b>mapping</b>, <b>reducing</b> etc.</p>
+
+                    <p class="mt">Manipulation is done via <b>declarative style</b> of programming and <b>internal iterations</b>.</p>
+
+                    <p class="fragment mt">All classes of this new API are located in package <b>java.util.stream.</b></p>
+                </section>
+
+                <section>
+                    <p>Because one example is worth a thousand of words...</p>
+                    <h2 class="mt">Let's looks to the code</h2>
+                </section>
+
+                <section>
+                    <h2>Streams and parallelism</h2>
+
+                </section>
 
 				<section>
 					<h1>THE END</h1>
