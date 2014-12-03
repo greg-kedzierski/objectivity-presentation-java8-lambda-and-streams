@@ -80,7 +80,10 @@
 				font-size: 75% !important;
 			}
 
-
+            .author {
+                font-size: 75% !important;
+                margin-top: 4em !important;
+            }
 
 		</style>
 	</head>
@@ -93,6 +96,7 @@
 
 				<section>
 					<h1>Lambdas & Streams<div>in Java8<br />~ quick introduction ~</div></h1>
+                    <p class="author">Grzegorz Kędzierski || <a href="mailto:gkedzierski@objectivity.co.uk">gkedzierski@objectivity.co.uk</a> || Objectivity 2014</p>
 				</section>
 
 				<section>
@@ -331,6 +335,14 @@ BinaryOperator&lt;Integer&gt; fun = (x,y) -> x + y;
 					<p class="mt">When using this <b>annotation</b>, java <b>compiler</b> ensures that <b>marked interface</b> have only <b>one abstract method</b>.</p>
 				</section>
 
+                <section>
+                    <h3>Capturing <b>variables</b> from <b>outer scope</b>.</h3>
+                    <p class="fragment mt">In the world of <b>Anonymous Classes</b>, such classes can only access <b>outer variables</b> if those variables are marked as <b>final</b>.</p>
+                    <p class="fragment mt">Almost same applies to <b>lambda expressions</b>, but...</p>
+                    <p class="fragment mt"><b>We don't have to marked them with final keyword.</b></p>
+                    <p class="fragment mt">Starting from <b>Java8</b> all "variables or parameters whose <b>value are never changed</b> after they are initialized are <b>effectively final</b>".</p>
+                </section>
+
 				<section>
 					<h1>Demo time...</h1>
 				</section>
@@ -533,8 +545,19 @@ java.util.concurrent.ForkJoinPool.common.parallelism
 
                 </section>
 
+                <section>
+                    <h3>...I think that this is</h3>
+                    <h1 class="fragment">THE END</h1>
+                </section>
+
 				<section>
-					<h1>THE END</h1>
+                    <h2>Sources</h2>
+                    <p class="mt">
+                        Source of this presentation<br />
+                        <a class="smaller" href="https://github.com/loskunos/objectivity-presentation-java8-lambda-and-streams">https://github.com/loskunos/objectivity-presentation-java8-lambda-and-streams</a></p>
+                    <p class="mt">
+                        Source of demo used during this presentation<br />
+                        <a class="smaller" href="https://github.com/loskunos/objectivity-presentation-java8-lambda-and-streams-demo">https://github.com/loskunos/objectivity-presentation-java8-lambda-and-streams-demo</a></p>
 				</section>
 
 			</div>
