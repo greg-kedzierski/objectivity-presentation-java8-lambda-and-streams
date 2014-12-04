@@ -295,8 +295,11 @@ Fun fun = (int x, int y) -> x+y
 interface Fun {
   int sum(int a, int b)
 }
-// But we can also ignore the result
-interface Fun {
+// We can also ignore the result, but only when lambda is a block or
+// is an expressions with void type
+FunVoid funVoid = (int x, int y) -> { int i = x+y; }
+
+interface FunVoid {
   void sum(int a, int b)
 }
 					</code></pre>
@@ -371,10 +374,10 @@ ArrayList::new       // constructor handler handler
                     <div class="fragment">
 					<p class="mt">It's more easier than it sounds...</p>
 					<pre><code data-trim class="java">
-// static method - parameters and returning type (optional) same as in target method
+// static method - parameters and returning type same as in target method
 UnaryOperator&lt;String&gt; getProperty = System::getProperty;
 
-// instance method on instance - parameters and returning type (optional) same as in target method
+// instance method on instance - parameters and returning type same as in target method
 Supplier&lt;Integer&gt; length = "abc"::length;
 
 // instance method on instance
@@ -383,7 +386,7 @@ Consumer&lt;Object&gt; printer = System.out::println;
 //  instance method on class - first parameter is class instance, then parameters from target method
 Function&lt;String,Integer&gt; length2 = String::length;
 
-// constructor handler - parameters same as constructor, return type samme as class
+// constructor handler - parameters same as constructor, return type in same type hierarchy as class
 // (or any of its parents)
 Supplier&lt;List&gt; listFactory = ArrayList::new;
 						</code></pre>
@@ -455,7 +458,7 @@ Supplier&lt;List&gt; listFactory = ArrayList::new;
                     <p>Let's start with simple iteration using <b>for loop</b></p>
                     <pre><code data-trim class="java">
 List&lt;String&gt; strings = ...
-for (int i = 0; i < strings.lenght(); i++) {
+for (int i = 0; i < strings.size(); i++) {
   System.out.println(strings.get(0));
 }
                     </code></pre>
